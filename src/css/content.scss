@@ -71,6 +71,10 @@
                     width: 100%;
                     z-index: 99999;
                 }
+                wave {
+                    transform: translateX(0);
+                    margin: 3px 0;
+                }
                 minimap {
                     position: absolute;
                     bottom: 5px;

@@ -123,20 +123,15 @@ $(function () {
                     //     console.log(markers[key][i]);
                     //     waveSurfers[key].addMarker(markers[key][i]);
                     // }
+                    waveSurfers[key].drawBuffer();
                 });
 
                 waveSurfers[key].on('error', message => {
                     console.log(key + ' ' + message);
                 });
 
-                waveSurfers[key].on('audioprocess', function () {
-
-                    // Draw the waves
-                    waveSurfers[key].drawBuffer();
-                });
-
                 //console.log(mixes[key], waves[key]);
-                waveSurfers[key].load('./build/audio/mixes/mp3/' + mixes[key]); //, waves[key]
+                waveSurfers[key].load('./build/audio/mixes/mp3/' + mixes[key], waves[key].data); //
 
 
             }
