@@ -1,0 +1,151 @@
+.audioplayer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    height: 65px;
+    z-index: 99;
+
+
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        background: #363636;
+        height: 100%;
+        border-bottom: 0;
+        gap: 15px;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        box-shadow: 0px -1px 2px #202020;
+    }
+
+    &_volume {
+        flex: 0 0 calc(100% - 100px);
+    }
+
+    &_volume,
+    &_playpause {
+        position: relative;
+
+        button {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+
+            border: 1px solid #ebebeb;
+            padding: 10px;
+            border-radius: 5px;
+
+            svg {
+                max-width: 100%;
+                max-height: 100%;
+                fill: #858585;
+            }
+
+            &:hover {
+                svg {
+                    fill: #fff;
+                }
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            margin: 18px 0;
+            width: calc(100% - 60px);
+            position: absolute;
+            top: -4px;
+            margin-left: 15px;
+          }
+          input[type="range"]:focus {
+            outline: none;
+          }
+          input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8.4px;
+            cursor: pointer;
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+            background: #858585;
+            border-radius: 1.3px;
+            border: 0.2px solid #010101;
+          }
+          input[type="range"]::-webkit-slider-thumb {
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+            border: 1px solid #000000;
+            height: 36px;
+            width: 16px;
+            border-radius: 3px;
+            background: #ffffff;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -14px;
+          }
+          input[type="range"]:focus::-webkit-slider-runnable-track {
+            background: #858585;
+          }
+          input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 8.4px;
+            cursor: pointer;
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+            background: #858585;
+            border-radius: 1.3px;
+            border: 0.2px solid #010101;
+          }
+          input[type="range"]::-moz-range-thumb {
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+            border: 1px solid #000000;
+            height: 36px;
+            width: 16px;
+            border-radius: 3px;
+            background: #ffffff;
+            cursor: pointer;
+          }
+          input[type="range"]::-ms-track {
+            width: 100%;
+            height: 8.4px;
+            cursor: pointer;
+            background: transparent;
+            border-color: transparent;
+            border-width: 16px 0;
+            color: transparent;
+          }
+          input[type="range"]::-ms-fill-lower {
+            background: #fff;
+            border: 0.2px solid #010101;
+            border-radius: 2.6px;
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+          }
+          input[type="range"]::-ms-fill-upper {
+            background: #858585;
+            border: 0.2px solid #010101;
+            border-radius: 2.6px;
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+          }
+          input[type=range]::-ms-thumb {
+            box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+            border: 1px solid #000000;
+            height: 36px;
+            width: 16px;
+            border-radius: 3px;
+            background: #ffffff;
+            cursor: pointer;
+          }
+          input[type=range]:focus::-ms-fill-lower {
+            background: #fff;
+          }
+          input[type=range]:focus::-ms-fill-upper {
+            background: #858585;
+          }
+    }
+}

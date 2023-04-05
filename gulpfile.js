@@ -26,6 +26,7 @@ $.gulp.task(
             "webp"
         ),
         $.gulp.parallel("watch", "serve")
+
     )
 );
 
@@ -51,3 +52,4 @@ $.gulp.task(
 
 $.gulp.task("imgs", $.gulp.series($.gulp.parallel("imgs")));
 $.gulp.task("webp", $.gulp.series($.gulp.parallel("webp")));
+$.gulp.task("filejson", $.gulp.series($.gulp.parallel("filejson")));

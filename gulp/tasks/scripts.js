@@ -29,8 +29,10 @@ module.exports = function () {
   $.gulp.task("scripts:libs", () => {
     return $.gulp
       .src([
+        "./node_modules/jquery/dist/jquery.min.js",
        "./node_modules/swiper/swiper-bundle.min.js",
        "./node_modules/wavesurfer.js/dist/wavesurfer.min.js",
+       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js",
       ])
       .pipe(
         babel({

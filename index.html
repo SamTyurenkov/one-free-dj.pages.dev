@@ -6,34 +6,130 @@
   <title>ONE FREE DJ</title>
   <link rel='stylesheet' id='libs-css' href='./build/css/libs.css?v=1' type='text/css' media='all' />
   <link rel='stylesheet' id='styles-css' href='./build/css/styles.css?v=1' type='text/css' media='all' />
+  <link rel="shortcut icon" type="image/png" href="./favicon.png" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <!--<link rel="manifest" href="./site.webmanifest">-->
+
+  <!-- https://fonts.gstatic.com is the font file origin -->
+  <!-- It may not have the same origin as the CSS file (https://fonts.googleapis.com) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- We use the full link to the CSS file in the rest of the tags -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" media="print"
+    onload="this.media='all'" />
+
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />
+  </noscript>
 </head>
 
 <body>
-  <div class="header">
-    <h1>ONE FREE DJ</h1>
-    <div class="header_profile_photo">
-      <picture>
-        <source srcset="./build/images/one_free_dj.webp" type="image/webp">
-        <source srcset="./build/images/one_free_dj.jpg" type="image/jpeg">
-        <img alt="One Free DJ" loading=lazy src="./build/images/one_free_dj.jpg">
-      </picture>
+  <div class="container">
+    <div class="header">
+      <div class="header_profile_photo">
+        <picture>
+          <source srcset="./build/images/one_free_dj.webp" type="image/webp">
+          <source srcset="./build/images/one_free_dj.jpg" type="image/jpeg">
+          <img alt="One Free DJ" loading=lazy src="./build/images/one_free_dj.jpg">
+        </picture>
+      </div>
+      <div class="header_profile_info">
+        <h1>ONE FREE DJ</h1>
+        <p>FREESTYLE MUSIC PERFORMER</p>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="content_tabs_select">
+        <div class="content_tabs_select_el selected" data-id="content-tab-mixes">Mixes</div>
+        <div class="content_tabs_select_el" data-id="content-tab-about">About</div>
+      </div>
+
+      <div class="content_tabs_selections">
+        <div class="content_tabs_selections_el selected" id="content-tab-mixes">
+
+        </div>
+        <div class="content_tabs_selections_el" id="content-tab-about">
+          <p>
+            One Free DJ is a freestyle DJ who's passion for diverse music genres led him to experiment with different styles, from drum'n'bass and breakbeat to jazz-hop, reggae and house, 
+            and everything in between.
+            He honed his skills as a DJ by playing at local venues and parties, perfecting his craft with each
+            performance.
+          </p>
+          <p>
+            Over time, One Free DJ developed a unique sound that blends different genres seamlessly, creating a distinct
+            musical experience for his audience, making him a sought-after performer for clubs and festivals alike.
+          </p>
+          <p>
+            One Free DJ's style is characterized by a deep understanding of the music he plays, combined with an
+            instinctive feel for the rhythm and flow of the crowd. His passion for music and his dedication to his craft
+            continue to drive his success as a freestyle DJ.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div class="footer_social_links">
+
+      </div>
     </div>
   </div>
 
-  <div class="content">
+
+  <div class="audioplayer">
+    <div class="container">
+
+      <div class="audioplayer_playpause">
+        <button id="play-icon">
+          <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+              <g>
+                <path d="M500.203,236.907L30.869,2.24c-6.613-3.285-14.443-2.944-20.736,0.939C3.84,7.083,0,13.931,0,21.333v469.333
+			c0,7.403,3.84,14.251,10.133,18.155c3.413,2.112,7.296,3.179,11.2,3.179c3.264,0,6.528-0.747,9.536-2.24l469.333-234.667
+			C507.435,271.467,512,264.085,512,256S507.435,240.533,500.203,236.907z" />
+              </g>
+            </g>
+          </svg>
+        </button>
+        <button id="pause-icon" class="hidden">
+          <svg fill="#000000" width="800px" height="800px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+            <path d="M754.571 0v1920H206V0h548.571Zm960 0v1920H1166V0h548.571Z" fill-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="audioplayer_volume">
+
+        <button id="mute-icon"><svg fill="#000000" width="800px" height="800px" viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M10 2c3.314 0 6 2.693 6 6 0 3.314-2.693 6-6 6v-2c2.205 0 4-1.79 4-4 0-2.205-1.79-4-4-4V2zm0 4c1.105 0 2 .888 2 2 0 1.105-.888 2-2 2V6zM0 3h2l6-3v16l-6-3H0V3zm2 2v6l4 2V3L2 5z"
+              fill-rule="evenodd" />
+          </svg></button>
+
+        <button id="unmute-icon" class="hidden"><svg fill="#000000" width="800px" height="800px" viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M13.173 6.414l1.413-1.413L16 6.415l-1.413 1.413L16 9.242l-1.414 1.414-1.413-1.413-1.414 1.413-1.414-1.414 1.413-1.414-1.413-1.413 1.414-1.414 1.414 1.413zM0 3h2l6-3v16l-6-3H0V3zm2 2v6l3.997 2V3L2 5z"
+              fill-rule="evenodd" />
+          </svg></button>
+
+          <input type="range" max="1" value="1" step="0.05">
+      </div>
+    </div>
 
   </div>
-
-  <div class="footer">
-
-  </div>
-
-  <div class="player">
-
-  </div>
-
-  <script defer id='libs-js' type='text/javascript' src='./build/js/libs.js?v=1' ></script>
-  <script defer id='scripts-js' type='text/javascript' src='./build/js/scripts.js?v=1' ></script>
+  <script defer id='libs-js' type='text/javascript' src='./build/js/libs.js?v=1'></script>
+  <script defer id='scripts-js' type='text/javascript' src='./build/js/scripts.js?v=1'></script>
 </body>
 
 </html>

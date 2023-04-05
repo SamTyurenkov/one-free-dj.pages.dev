@@ -40,6 +40,7 @@
         "core-js": "^3.29.1",
         "del": "^7.0.0",
         "editorjs-html": "^3.4.2",
+        "filenames-to-json": "^1.0.0",
         "flickity": "^3.0.0",
         "gulp": "^4.0.2",
         "gulp-autoprefixer": "^8.0.0",
@@ -50,6 +51,7 @@
         "gulp-concat-css": "^3.1.0",
         "gulp-csscomb": "^3.1.0",
         "gulp-csso": "^4.0.1",
+        "gulp-file-contents-to-json": "^0.2.2",
         "gulp-if": "^3.0.0",
         "gulp-imagemin": "^8.0.0",
         "gulp-minify-css": "^1.2.4",
@@ -64,6 +66,7 @@
         "imagemin-jpeg-recompress": "^7.1.0",
         "imagemin-optipng": "^8.0.0",
         "imagemin-pngquant": "^9.0.2",
+        "jquery": "^3.6.4",
         "normalize.css": "^8.0.1",
         "perfect-scrollbar": "^1.5.5",
         "postcss-dir-pseudo-class": "^7.0.2",
@@ -76,5 +79,8 @@
         "swiper": "^9.1.1",
         "vanilla-lazyload": "^17.8.3",
         "wavesurfer.js": "^6.6.2"
+    },
+    "dependencies": {
+        "node-json-file-tree": "^2.1.0"
     }
 }

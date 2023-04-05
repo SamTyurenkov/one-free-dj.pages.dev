@@ -1,5 +1,15 @@
 html, body {
     margin: 0;
     background: #202020;
-    color: #fff;
+    color: #ebebeb;
+}
+.container {
+    width: 600px;
+    max-width: calc(100% - 20px);
+    margin: 0 auto;
+}
+
+h1,h2,h3,h4,h5,h6,p,a,div,span {
+    font-family: 'Roboto';
+    font-weight: 400;
 }
