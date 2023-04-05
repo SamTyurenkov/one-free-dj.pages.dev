@@ -87,7 +87,7 @@ $(function () {
                 waveColor: '#e2715d',
                 barWidth: 2,
                 progressColor: '#ff211e',
-                //backend: 'MediaElementWebAudio',
+                backend: 'MediaElementWebAudio',
                 normalize: true,
                 //mediaControls: true,
                 scrollParent: true,
@@ -108,7 +108,7 @@ $(function () {
             waveSurfers[key].on('ready', function () {
                 loaders[key].remove();
                 var duration = parseFloat(waveSurfers[key].getDuration() / 60).toFixed(2) + ' minutes';
-                $('#mix_'+key).find('h3').append(' <span class="duration">'+duration+'</span>');
+                $('#mix_'+key).append('<span class="duration">'+duration+'</span>');
                 // for(var i in markers[key]) {
                 //     console.log(markers[key][i]);
                 //     waveSurfers[key].addMarker(markers[key][i]);
