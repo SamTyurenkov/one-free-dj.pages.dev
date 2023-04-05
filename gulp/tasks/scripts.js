@@ -33,6 +33,8 @@ module.exports = function () {
        "./node_modules/swiper/swiper-bundle.min.js",
        "./node_modules/wavesurfer.js/dist/wavesurfer.min.js",
        "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js",
+       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.markers.min.js",
+       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js",
       ])
       .pipe(
         babel({

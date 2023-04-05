@@ -33,7 +33,8 @@ $(function () {
 
     $(playButton).on('click',function() {
         if(currentKey == 'x')  {
-            $('#mix_1').trigger('click');
+            $('#mix_0').trigger('click');
+            return;
         };
         $(playButton).addClass('hidden');
         $(pauseButton).removeClass('hidden');
