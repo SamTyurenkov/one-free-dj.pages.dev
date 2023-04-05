@@ -78,9 +78,7 @@
         "smooth-scrollbar": "^8.8.1",
         "swiper": "^9.1.1",
         "vanilla-lazyload": "^17.8.3",
-        "wavesurfer.js": "^6.6.2"
-    },
-    "dependencies": {
+        "wavesurfer.js": "^6.6.2",
         "node-json-file-tree": "^2.1.0"
     }
 }

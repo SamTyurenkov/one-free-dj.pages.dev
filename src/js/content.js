@@ -5,6 +5,7 @@ var waveSurfers = [];
 var markers = [];
 var waves = [];
 var loaders = [];
+var promises = [];
 var MinimapPlugin = window.WaveSurfer.minimap;
 var MarkersPlugin = window.WaveSurfer.markers;
 var TimelinePlugin = window.WaveSurfer.timeline;
@@ -21,8 +22,9 @@ $(function () {
         $('#' + target).addClass('selected');
     });
 
+    async function create_surfers() {
 
-    async function populate_mixes() {
+
         mixes = contentsJson.audio.mixes.mp3.files;
 
         for (var key in mixes) {
@@ -46,98 +48,108 @@ $(function () {
 
 
             let metaJson = mixes[key].replace(/\.[^.]+$/, '.json');
-            fetch('./build/audio/mixes/meta_jsons/' + metaJson)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("HTTP error " + response.status);
-                    }
-                    return response.json();
-                })
-                .then((json) => {
-                    mix.querySelector('h3').innerHTML = json.name;
-                    markers[key] = json.tracklist;
-                });
-
+            promises.push(
+                await fetch('./build/audio/mixes/meta_jsons/' + metaJson)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then((json) => {
+                        mix.querySelector('h3').innerHTML = json.name;
+                        markers[key] = json.tracklist;
+                    })
+            )
 
             let waveJson = mixes[key].replace(/\.[^.]+$/, '.json');
-            fetch('./build/audio/mixes/wave_jsons/' + waveJson)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("HTTP error " + response.status);
-                    }
-                    return response.json();
-                })
-                .then((json) => {
-                    //console.log(json);
-                    waves[key] = json;
+            promises.push(
+                await fetch('./build/audio/mixes/wave_jsons/' + waveJson)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("HTTP error " + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then((json) => {
+                        //console.log(json);
+                        //console.log(key);
+                        waves[key] = json;
+                    })
+            )
+
+
+        }
+
+
+        // wait until the promise returns us a value
+        Promise.all(promises).then(() => {
+            //console.log('returned', mixes.length, markers.length, waves.length);
+            for (let key in mixes) {
+                //console.log('doing key' + key);
+                waveSurfers[key] = WaveSurfer.create({
+                    container: '#mix_' + key,
+                    waveColor: '#e2715d',
+                    barWidth: 2,
+                    progressColor: '#ff211e',
+                    backend: 'MediaElementWebAudio',
+                    normalize: true,
+                    //mediaControls: true,
+                    scrollParent: true,
+                   // partialRender: true,
+                    hideScrollbar: true,
+                    plugins: [
+                        MinimapPlugin.create({
+                            // plugin options ...
+                        }),
+                        // MarkersPlugin.create({
+                        // }),
+                        // TimelinePlugin.create({
+                        //     container: "#mix_"+key+" .timeline"
+                        // })
+                    ]
                 });
-        }
+
+                //console.log(waveSurfers[key]);
+
+                waveSurfers[key].on('ready', function () {
+                   // console.log(waveSurfers);
+
+                    loaders[key].remove();
+
+                    var duration = parseFloat(waveSurfers[key].getDuration() / 60).toFixed(2) + ' minutes';
+                    $('#mix_' + key).append('<span class="duration">' + duration + '</span>');
+                    // for(var i in markers[key]) {
+                    //     console.log(markers[key][i]);
+                    //     waveSurfers[key].addMarker(markers[key][i]);
+                    // }
+                });
+
+                waveSurfers[key].on('error', message => {
+                    console.log(key + ' ' + message);
+                });
+
+                waveSurfers[key].on('audioprocess', function () {
+
+                    // Draw the waves
+                    waveSurfers[key].drawBuffer();
+                });
+
+                //console.log(mixes[key], waves[key]);
+                waveSurfers[key].load('./build/audio/mixes/mp3/' + mixes[key]); //, waves[key]
 
 
+            }
 
-    }
-
-
-    async function create_surfers() {
-
-        await (mixes.length == markers.length == waves.length);
-        for (var key in mixes) {
-            waveSurfers[key] = WaveSurfer.create({
-                container: '#mix_' + key,
-                waveColor: '#e2715d',
-                barWidth: 2,
-                progressColor: '#ff211e',
-                backend: 'MediaElementWebAudio',
-                normalize: true,
-                //mediaControls: true,
-                scrollParent: true,
-                partialRender: true,
-                hideScrollbar: true,
-                plugins: [
-                    MinimapPlugin.create({
-                        // plugin options ...
-                    }),
-                    // MarkersPlugin.create({
-                    // }),
-                    // TimelinePlugin.create({
-                    //     container: "#mix_"+key+" .timeline"
-                    // })
-                ]
-            });
-
-            waveSurfers[key].on('ready', function () {
-                loaders[key].remove();
-                var duration = parseFloat(waveSurfers[key].getDuration() / 60).toFixed(2) + ' minutes';
-                $('#mix_'+key).append('<span class="duration">'+duration+'</span>');
-                // for(var i in markers[key]) {
-                //     console.log(markers[key][i]);
-                //     waveSurfers[key].addMarker(markers[key][i]);
-                // }
-            });
-
-            waveSurfers[key].on('error', message => {
-                console.log(message);
-            });
-
-            waveSurfers[key].on('audioprocess', function () {
-
-                // Draw the waves
-                waveSurfers[key].drawBuffer();
-            });
-
-            waveSurfers[key].load('./build/audio/mixes/mp3/' + mixes[key],waves[key]);
-
-
-        }
+        });
     }
 
     fetch('./build/contents.json')
         .then((response) => response.json())
         .then(async (json) => {
-            console.log(json);
+           // console.log(json);
             contentsJson = json;
 
-            await populate_mixes();
             await create_surfers();
         });
 
