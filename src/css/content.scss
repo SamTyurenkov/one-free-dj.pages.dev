@@ -73,12 +73,10 @@
                     z-index: 99999;
                 }
                 wave {
-                    transform: translateX(0);
                     top: 3px;
                     filter: brightness(0.7);
                 }
                 minimap {
-                    transform: translateX(0);
                     position: absolute;
                     bottom: 0;
                     width: 100%;
