@@ -117,8 +117,10 @@ $(function () {
 
                     loaders[key].remove();
 
-                    var duration = parseFloat(waveSurfers[key].getDuration() / 60).toFixed(2) + ' minutes';
-                    $('#mix_' + key).append('<span class="duration">' + duration + '</span>');
+                    var totalSeconds = parseFloat(waveSurfers[key].getDuration()).toFixed(2);
+                    let minutes = Math.floor(totalSeconds / 60);
+                    let seconds = parseInt(totalSeconds % 60);
+                    $('#mix_' + key).append('<span class="duration">' + minutes + ':' +seconds+  '</span>');
                     // for(var i in markers[key]) {
                     //     console.log(markers[key][i]);
                     //     waveSurfers[key].addMarker(markers[key][i]);
