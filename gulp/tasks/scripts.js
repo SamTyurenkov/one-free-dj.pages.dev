@@ -4,6 +4,7 @@ let minify = require("gulp-uglify"),
   strip = require("gulp-strip-comments"),
   corejs = require("core-js/stable"),
   regeneratorRuntime = require("regenerator-runtime"),
+  webpack = require('webpack-stream'),
   scriptsPATH = {
     input: "./src/js/",
     output: "./build/js/",
@@ -15,6 +16,11 @@ module.exports = function () {
   $.gulp.task("scripts:global", () => {
     return $.gulp
       .src([scriptsPATH.input + "*.js"])
+      .pipe(
+        webpack({
+          // Any configuration options...
+        })
+      )
       .pipe(
         babel({
           presets: ["@babel/preset-env"],
@@ -31,10 +37,13 @@ module.exports = function () {
       .src([
         "./node_modules/jquery/dist/jquery.min.js",
        "./node_modules/swiper/swiper-bundle.min.js",
-       "./node_modules/wavesurfer.js/dist/wavesurfer.min.js",
-       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js",
-       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.markers.min.js",
-       "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js",
+      //  "./node_modules/wavesurfer.js/dist/wavesurfer.min.js",
+      //  "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js",
+       //"./node_modules/wavesurfer.js/dist/plugin/wavesurfer.markers.min.js",
+      //  "./node_modules/wavesurfer.js/dist/wavesurfer.min.js",
+      //  "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js",
+      //  "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.markers.min.js",
+      //  "./node_modules/wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js",
       ])
       .pipe(
         babel({

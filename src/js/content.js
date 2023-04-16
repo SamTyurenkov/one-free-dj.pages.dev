@@ -6,9 +6,12 @@ var markers = [];
 var waves = [];
 var loaders = [];
 var promises = [];
-var MinimapPlugin = window.WaveSurfer.minimap;
-var MarkersPlugin = window.WaveSurfer.markers;
-var TimelinePlugin = window.WaveSurfer.timeline;
+// var MinimapPlugin = window.WaveSurfer.minimap;
+// var MarkersPlugin = window.WaveSurfer.markers;
+// var TimelinePlugin = window.WaveSurfer.timeline;
+
+import WaveSurfer from 'wavesurfer.js';
+import MinimapPlugin from 'wavesurfer.js';
 
 $(function () {
     $('.content_tabs_select_el').on('click', function () {
@@ -87,40 +90,39 @@ $(function () {
             //console.log('returned', mixes.length, markers.length, waves.length);
             for (let key in mixes) {
                 //console.log('doing key' + key);
+                console.log(document.querySelector('#mix_' + key));
                 waveSurfers[key] = WaveSurfer.create({
-                    container: '#mix_' + key,
+                    container:  document.querySelector('#mix_' + key),
                     waveColor: '#e2715d',
                     barWidth: 2,
                     progressColor: '#ff211e',
                     backend: 'MediaElementWebAudio',
                     normalize: true,
-                    //mediaControls: true,
                     scrollParent: true,
-                   // partialRender: true,
                     hideScrollbar: true,
                     plugins: [
                         MinimapPlugin.create({
                             // plugin options ...
+                            // plugins: [
+                            //     // MarkersPlugin.create({
+                            //     //     markers: markers[key]
+                            //     // }),
+                            // ]
                         }),
-                        // MarkersPlugin.create({
-                        // }),
-                        // TimelinePlugin.create({
-                        //     container: "#mix_"+key+" .timeline"
-                        // })
                     ]
                 });
 
                 //console.log(waveSurfers[key]);
 
                 waveSurfers[key].on('ready', function () {
-                   // console.log(waveSurfers);
+                    // console.log(waveSurfers);
 
                     loaders[key].remove();
 
                     var totalSeconds = parseFloat(waveSurfers[key].getDuration()).toFixed(2);
                     let minutes = Math.floor(totalSeconds / 60);
                     let seconds = parseInt(totalSeconds % 60);
-                    $('#mix_' + key).append('<span class="duration">' + minutes + ':' +seconds+  '</span>');
+                    $('#mix_' + key).append('<span class="duration">' + minutes + ':' + seconds + '</span>');
                     // for(var i in markers[key]) {
                     //     console.log(markers[key][i]);
                     //     waveSurfers[key].addMarker(markers[key][i]);
@@ -144,7 +146,7 @@ $(function () {
     fetch('./build/contents.json')
         .then((response) => response.json())
         .then(async (json) => {
-           // console.log(json);
+            // console.log(json);
             contentsJson = json;
 
             await create_surfers();

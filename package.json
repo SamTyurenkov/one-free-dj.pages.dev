@@ -67,6 +67,7 @@
         "imagemin-optipng": "^8.0.0",
         "imagemin-pngquant": "^9.0.2",
         "jquery": "^3.6.4",
+        "node-json-file-tree": "^2.1.0",
         "normalize.css": "^8.0.1",
         "perfect-scrollbar": "^1.5.5",
         "postcss-dir-pseudo-class": "^7.0.2",
@@ -78,7 +79,7 @@
         "smooth-scrollbar": "^8.8.1",
         "swiper": "^9.1.1",
         "vanilla-lazyload": "^17.8.3",
-        "wavesurfer.js": "^6.6.2",
-        "node-json-file-tree": "^2.1.0"
+        "wavesurfer.js": "^7.0.0-alpha.30",
+        "webpack-stream": "^7.0.0"
     }
 }
