@@ -169,7 +169,7 @@ $(function () {
 
                         regions[key].addRegion({
                             start: markers[key][i]['time'], 
-                            content: contentDiv, 
+                            content: contentDiv,  
                             color: markers[key][i]['color'],
                             drag: false
                         });

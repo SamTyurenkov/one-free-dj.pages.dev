@@ -1,0 +1,25 @@
+{
+    "name":"Club & Vocal House, Disco",
+    "tracklist":[
+        {
+            "label":"<span>Kerala Dust</span><br> Dance Me to the End of Love (Dude Skywalker Latin Love Edit)",
+            "time": 0,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Afternoons In Stereo</span><br>Party At Dick And Mimi's",
+            "time": 104,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Angelo Ferreri</span><br>I Don't Know Why",
+            "time": 263,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Funky Blackman </span><br> Foreverly (Funk What She Said Mix)",
+            "time": 426,
+            "color": "#fff"
+        }
+    ]
+}
