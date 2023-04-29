@@ -1,14 +1,19 @@
 $ = jQuery;
 var contentsJson;
-var mixes = [];
-var waveSurfers = [];
-var markers = [];
-var waves = [];
-var loaders = [];
-var promises = [];
-var MinimapPlugin = window.WaveSurfer.minimap;
-var MarkersPlugin = window.WaveSurfer.markers;
-var TimelinePlugin = window.WaveSurfer.timeline;
+window.containers = [];
+window.mixes = [];
+window.waveSurfers = [];
+window.regions = [];
+window.markers = [];
+window.waves = [];
+window.loaders = [];
+window.promises = [];
+window.minimaps = [];
+
+import WaveSurfer from '../../node_modules/wavesurfer.js/dist/wavesurfer.js';
+import MinimapPlugin from '../../node_modules/wavesurfer.js/dist/plugins/minimap.js';
+import RegionsPlugin from '../../node_modules/wavesurfer.js/dist/plugins/regions.js';
+import { error } from 'jquery';
 
 $(function () {
     $('.content_tabs_select_el').on('click', function () {
@@ -22,21 +27,14 @@ $(function () {
         $('#' + target).addClass('selected');
     });
 
-    async function create_surfers() {
+    function create_containers() {
+        for (let key in mixes) {
 
-
-        mixes = contentsJson.audio.mixes.mp3.files;
-
-        for (var key in mixes) {
             let mix = document.createElement('div');
             mix.innerHTML = '<h3></h3>';
             mix.setAttribute('id', 'mix_' + key);
             mix.setAttribute('data-key', key);
             mix.setAttribute('class', 'single_mix');
-
-            let timeline = document.createElement('div');
-            timeline.setAttribute('class', 'timeline');
-            $(mix).append(timeline);
 
             let loader = document.createElement('div');
             loader.setAttribute('class', 'loader');
@@ -45,7 +43,17 @@ $(function () {
             $(mix).append(loader);
 
             $('#content-tab-mixes').append(mix);
+            containers[key] = mix;
+        }
+        console.log('created all');
+    }
 
+
+    async function pre_create_surfers() {
+
+        await create_containers();
+
+        for (let key in mixes) {
 
             let metaJson = mixes[key].replace(/\.[^.]+$/, '.json');
             promises.push(
@@ -57,7 +65,7 @@ $(function () {
                         return response.json();
                     })
                     .then((json) => {
-                        mix.querySelector('h3').innerHTML = json.name;
+                        containers[key].querySelector('h3').innerHTML = json.name;
                         markers[key] = json.tracklist;
                     })
             )
@@ -79,62 +87,111 @@ $(function () {
             )
 
 
+
         }
 
+    }
+
+    async function create_surfers() {
+
+
+        mixes = contentsJson.audio.mixes.mp3.files;
+        await pre_create_surfers();
 
         // wait until the promise returns us a value
         Promise.all(promises).then(() => {
-            //console.log('returned', mixes.length, markers.length, waves.length);
+            console.log('returned', mixes.length, markers.length, waves.length, document.querySelectorAll('.single_mix').length);
             for (let key in mixes) {
                 //console.log('doing key' + key);
+                console.log(document.querySelector('#mix_' + key));
                 waveSurfers[key] = WaveSurfer.create({
-                    container: '#mix_' + key,
+                    container: document.querySelector('#mix_' + key),
                     waveColor: '#e2715d',
                     barWidth: 2,
                     progressColor: '#ff211e',
                     backend: 'MediaElementWebAudio',
                     normalize: true,
-                    //mediaControls: true,
+                    height: 80,
                     scrollParent: true,
-                   // partialRender: true,
                     hideScrollbar: true,
-                    plugins: [
-                        MinimapPlugin.create({
-                            // plugin options ...
-                        }),
-                        // MarkersPlugin.create({
-                        // }),
-                        // TimelinePlugin.create({
-                        //     container: "#mix_"+key+" .timeline"
-                        // })
-                    ]
+                    peaks: [waves[key].data],
+                    url: './build/audio/mixes/mp3/' + mixes[key],
+                    minPxPerSec: 50
                 });
 
-                //console.log(waveSurfers[key]);
+                regions[key] = RegionsPlugin.create({
+                    dragSelection: false
+                });
 
-                waveSurfers[key].on('ready', function () {
-                   // console.log(waveSurfers);
+
+
+                minimaps[key] = waveSurfers[key].registerPlugin(
+                    MinimapPlugin.create({
+                        container: document.querySelector('#mix_' + key),
+                        scrollParent: true,
+                        height: 30,
+                        waveColor: '#858585',
+                        progressColor: '#666',
+                        fillParent: true,
+                        hideScrollbar: true,
+                        minPxPerSec: 2,
+                        dragSelection: false,
+                        peaks: [waves[key].data],
+                        plugins: [ regions[key] ], 
+                    }),
+                );
+
+                // waveSurfers[key].on('ready', function () {
+
+                //     //waveSurfers[key].setOptions();
+
+                // });
+
+                waveSurfers[key].on('audioprocess',function(currentTime){
+                    var totalSeconds = parseFloat(currentTime).toFixed(2);
+                    let minutes = Math.floor(totalSeconds / 60);
+                    let seconds = parseInt(totalSeconds % 60) > 9 ? parseInt(totalSeconds % 60) : '0'+parseInt(totalSeconds % 60);
+    
+                    document.querySelector('#mix_' + key + ' .current').innerHTML = minutes + ':' + seconds;       
+                });
+
+                waveSurfers[key].on('decode', function () {
+
+                    console.log(waveSurfers[key]);
+                    //console.log(regions);
+
+                    for (var i in markers[key]) {
+
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'wavesurfer-region';
+                        contentDiv.innerHTML = markers[key][i]['label'];
+
+                        regions[key].addRegion({
+                            start: markers[key][i]['time'], 
+                            content: contentDiv, 
+                            color: markers[key][i]['color'] 
+                        });
+                    }
+
 
                     loaders[key].remove();
 
+                    var host = document.querySelectorAll('#mix_'+key+' div')[1].querySelectorAll('div')[1];
+                    var style = document.createElement( 'style' );
+                    style.innerHTML = '.wavesurfer-region { opacity: 0; color: white; white-space: nowrap; font-size: 9px; } .wavesurfer-region:hover {opacity:1} .wavesurfer-region span {color: #bebebe;}';
+                    host.shadowRoot.appendChild( style );
+
                     var totalSeconds = parseFloat(waveSurfers[key].getDuration()).toFixed(2);
                     let minutes = Math.floor(totalSeconds / 60);
-                    let seconds = parseInt(totalSeconds % 60);
-                    $('#mix_' + key).append('<span class="duration">' + minutes + ':' +seconds+  '</span>');
-                    // for(var i in markers[key]) {
-                    //     console.log(markers[key][i]);
-                    //     waveSurfers[key].addMarker(markers[key][i]);
-                    // }
-                    waveSurfers[key].drawBuffer();
+                    let seconds = parseInt(totalSeconds % 60) > 9 ? parseInt(totalSeconds % 60) : '0'+parseInt(totalSeconds % 60);
+                    $('#mix_' + key).append('<span class="duration">' + minutes + ':' + seconds + '</span>');
+                    $('#mix_' + key).append('<span class="current">0:00</span>');
+
                 });
 
                 waveSurfers[key].on('error', message => {
                     console.log(key + ' ' + message);
                 });
-
-                //console.log(mixes[key], waves[key]);
-                waveSurfers[key].load('./build/audio/mixes/mp3/' + mixes[key], waves[key].data); //
-
 
             }
 
@@ -144,7 +201,7 @@ $(function () {
     fetch('./build/contents.json')
         .then((response) => response.json())
         .then(async (json) => {
-           // console.log(json);
+            // console.log(json);
             contentsJson = json;
 
             await create_surfers();

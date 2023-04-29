@@ -2,18 +2,18 @@
     "name":"Instrumental, Jazz Hop, House",
     "tracklist":[
         {
-            "label":"Grammatik - A Bright Day",
+            "label":"<span>Grammatik</span><br> A Bright Day",
             "time": 0,
             "color": "#fff"
         },
         {
-            "label":"Q Funktion - Like I Usually Do",
-            "time": 2.36,
+            "label":"<span>Q Funktion</span><br>Like I Usually Do",
+            "time": 156,
             "color": "#fff"
         },
         {
-            "label":"Detroit Swingle feat. Jungle by Night - Call of The Wild",
-            "time": 7,
+            "label":"<span>Detroit Swingle feat. Jungle by Night</span><br> Call of The Wild",
+            "time": 260,
             "color": "#fff"
         }
     ]

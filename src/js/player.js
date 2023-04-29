@@ -16,7 +16,7 @@ $(function () {
         if (typeof waveSurfers !== 'undefined' && waveSurfers instanceof Object && key in waveSurfers) {
             if (currentKey != key && currentKey != 'x') {
                 waveSurfers[currentKey].pause();
-                waveSurfers[key].setMute(waveSurfers[currentKey].getMute());
+                waveSurfers[key].setMuted(waveSurfers[currentKey].getMuted());
                 waveSurfers[key].setVolume(waveSurfers[currentKey].getVolume());
             }
 
@@ -28,6 +28,8 @@ $(function () {
             }
 
             currentKey = key;
+        } else {
+            console.log('else', typeof waveSurfers, waveSurfers instanceof Object, key in waveSurfers);
         }
     });
 
@@ -52,14 +54,14 @@ $(function () {
         if(currentKey == 'x') return;
         $(unmuteButton).removeClass('hidden');
         $(muteButton).addClass('hidden');
-        waveSurfers[currentKey].setMute(true);
+        waveSurfers[currentKey].setMuted(true);
     });
 
     $(unmuteButton).on('click',function() {
         if(currentKey == 'x') return;
         $(unmuteButton).addClass('hidden');
         $(muteButton).removeClass('hidden');
-        waveSurfers[currentKey].setMute(false);
+        waveSurfers[currentKey].setMuted(false);
     });
 
     $(volumeInput).on('change',function() {
