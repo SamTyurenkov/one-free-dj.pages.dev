@@ -1,6 +1,30 @@
 {
     "name":"Electronic, Breakbeat, Reggae",
     "tracklist":[
-
+        {
+            "label":"<span>Amon Tobin</span><br> Verbal (Prefuse 73 Dipped Escalade Mix)",
+            "time": 0,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Mister T.</span><br>Swingin Around",
+            "time": 88,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Prodigy</span><br>Diesel Power",
+            "time": 215,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Boogie Belgique </span><br> Jungle Law",
+            "time": 404,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Bob Marley </span><br> Could You Be Loved",
+            "time": 585,
+            "color": "#fff"
+        }
     ]
 }

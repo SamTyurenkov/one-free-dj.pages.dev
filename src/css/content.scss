@@ -53,10 +53,26 @@
                     border-radius: 5px;
                     font-size: 12px;
                     position: absolute;
-                    bottom: 10px;
+                    bottom: 63px;
                     z-index: 99999999999;
                     right: 15px;
                     transform: translateX(0);
+                    background: #363636;
+                }
+
+                .current {
+                    border: 1px solid #718585;
+                    padding: 4px;
+                    border-radius: 5px;
+                    font-size: 12px;
+                    position: absolute;
+                    bottom: 63px;
+                    z-index: 99999999999;
+                    left: 15px;
+                    -webkit-transform: translateX(0);
+                    -ms-transform: translateX(0);
+                    transform: translateX(0);
+                    background: #363636;
                 }
 
                 h3 {
@@ -72,45 +88,7 @@
                     width: 100%;
                     z-index: 99999;
                 }
-                wave {
-                    top: 3px;
-                    filter: brightness(0.7);
-                }
-                minimap {
-                    position: absolute;
-                    bottom: 0;
-                    width: 100%;
-                    background: #363636;
-                    z-index: 999;
-                    height: 70px;
-                    z-index: 9999999999;
 
-                    wave {
-                        filter: unset;
-                    }
-                }
-                marker {
-                    z-index: 999999;
-
-                    svg {
-                        position: relative;
-                        top: -25px;
-                    }
-                    .marker-label span {
-                        position: relative;
-                        left: -15px;
-                        display: none !important;
-                    }
-
-                    &:hover {
-
-                        .marker-label span {
-                            display: block !important;
-                            position: relative;
-                            z-index: 99999999;
-                        }
-                    }
-                }
             }
 
             p {

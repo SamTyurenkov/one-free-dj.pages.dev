@@ -1,6 +1,25 @@
 {
     "name":"Jungle, Drum & Bass",
     "tracklist":[
-
+        {
+            "label":"<span>Barrington Levy</span><br> Here I Come (Nu:Tone Remix)",
+            "time": 0,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Vibe Chemistry</span><br>Balling",
+            "time": 152,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>Shy FX & T Power</span><br>Feelings",
+            "time": 284,
+            "color": "#fff"
+        },
+        {
+            "label":"<span>DJ SS </span><br> Feeling Blessed",
+            "time": 402,
+            "color": "#fff"
+        }
     ]
 }
