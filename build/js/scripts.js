@@ -11215,7 +11215,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         $('#' + target).addClass('selected');
       });
       function create_containers() {
-        for (var key in mixes) {
+        for (var i = mixes.length; i > 0; i--) {
+          var key = Object.keys(mixes)[i - 1];
           var mix = document.createElement('div');
           mix.innerHTML = '<h3></h3>';
           mix.setAttribute('id', 'mix_' + key);
@@ -11337,18 +11338,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                       minPxPerSec: 50
                     });
                     regions[key] = _node_modules_wavesurfer_js_dist_plugins_regions_js__WEBPACK_IMPORTED_MODULE_2__["default"].create({
-                      dragSelection: false
+                      drag: false
                     });
                     minimaps[key] = waveSurfers[key].registerPlugin(_node_modules_wavesurfer_js_dist_plugins_minimap_js__WEBPACK_IMPORTED_MODULE_1__["default"].create({
                       container: document.querySelector('#mix_' + key),
-                      scrollParent: true,
+                      scrollParent: false,
                       height: 30,
+                      autoCenter: true,
                       waveColor: '#858585',
                       progressColor: '#666',
                       fillParent: true,
                       hideScrollbar: true,
-                      minPxPerSec: 2,
-                      dragSelection: false,
+                      interact: true,
+                      minPxPerSec: 1,
                       peaks: [waves[key].data],
                       plugins: [regions[key]]
                     }));
@@ -11376,13 +11378,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                         regions[key].addRegion({
                           start: markers[key][i]['time'],
                           content: contentDiv,
-                          color: markers[key][i]['color']
+                          color: markers[key][i]['color'],
+                          drag: false
                         });
                       }
                       loaders[key].remove();
                       var host = document.querySelectorAll('#mix_' + key + ' div')[1].querySelectorAll('div')[1];
                       var style = document.createElement('style');
-                      style.innerHTML = '.wavesurfer-region { opacity: 0; color: white; white-space: nowrap; font-size: 9px; } .wavesurfer-region:hover {opacity:1} .wavesurfer-region span {color: #bebebe;}';
+                      style.innerHTML = '.wrapper > div:nth-child(3) > div {pointer-events:none !important} .wavesurfer-region { cursor:initial; pointer-events:all !important; margin-top: 0 !important; opacity: 0; color: white; white-space: nowrap; font-size: 9px; } .wavesurfer-region:hover {opacity:1} .wavesurfer-region span {color: #bebebe;}';
                       host.shadowRoot.appendChild(style);
                       var totalSeconds = parseFloat(waveSurfers[key].getDuration()).toFixed(2);
                       var minutes = Math.floor(totalSeconds / 60);

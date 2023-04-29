@@ -28,8 +28,8 @@ $(function () {
     });
 
     function create_containers() {
-        for (let key in mixes) {
-
+        for (var i = mixes.length; i > 0; i--) {
+            let key = Object.keys(mixes)[i-1];
             let mix = document.createElement('div');
             mix.innerHTML = '<h3></h3>';
             mix.setAttribute('id', 'mix_' + key);
@@ -120,7 +120,7 @@ $(function () {
                 });
 
                 regions[key] = RegionsPlugin.create({
-                    dragSelection: false
+                    drag: false
                 });
 
 
@@ -128,14 +128,15 @@ $(function () {
                 minimaps[key] = waveSurfers[key].registerPlugin(
                     MinimapPlugin.create({
                         container: document.querySelector('#mix_' + key),
-                        scrollParent: true,
+                        scrollParent: false,
                         height: 30,
+                        autoCenter: true,
                         waveColor: '#858585',
                         progressColor: '#666',
                         fillParent: true,
                         hideScrollbar: true,
-                        minPxPerSec: 2,
-                        dragSelection: false,
+                        interact: true,
+                        minPxPerSec: 1,
                         peaks: [waves[key].data],
                         plugins: [ regions[key] ], 
                     }),
@@ -169,7 +170,8 @@ $(function () {
                         regions[key].addRegion({
                             start: markers[key][i]['time'], 
                             content: contentDiv, 
-                            color: markers[key][i]['color'] 
+                            color: markers[key][i]['color'],
+                            drag: false
                         });
                     }
 
@@ -178,7 +180,7 @@ $(function () {
 
                     var host = document.querySelectorAll('#mix_'+key+' div')[1].querySelectorAll('div')[1];
                     var style = document.createElement( 'style' );
-                    style.innerHTML = '.wavesurfer-region { opacity: 0; color: white; white-space: nowrap; font-size: 9px; } .wavesurfer-region:hover {opacity:1} .wavesurfer-region span {color: #bebebe;}';
+                    style.innerHTML = '.wrapper > div:nth-child(3) > div {pointer-events:none !important} .wavesurfer-region { cursor:initial; pointer-events:all !important; margin-top: 0 !important; opacity: 0; color: white; white-space: nowrap; font-size: 9px; } .wavesurfer-region:hover {opacity:1} .wavesurfer-region span {color: #bebebe;}';
                     host.shadowRoot.appendChild( style );
 
                     var totalSeconds = parseFloat(waveSurfers[key].getDuration()).toFixed(2);
