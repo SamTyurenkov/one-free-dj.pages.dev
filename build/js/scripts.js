@@ -9734,6 +9734,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       var _base_plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../base-plugin.js */"./node_modules/wavesurfer.js/dist/base-plugin.js");
       /* harmony import */
       var _wavesurfer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../wavesurfer.js */"./node_modules/wavesurfer.js/dist/wavesurfer.js");
+      /**
+       * Minimap is a tiny copy of the main waveform serving as a navigation tool.
+       */
+
       var defaultOptions = {
         height: 50,
         overlayColor: 'rgba(100, 100, 100, 0.1)',
@@ -9804,7 +9808,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             if (!data || !media) return;
             this.miniWavesurfer = _wavesurfer_js__WEBPACK_IMPORTED_MODULE_1__["default"].create(_objectSpread(_objectSpread({}, this.options), {}, {
               container: this.minimapWrapper,
-              minPxPerSec: 1,
+              minPxPerSec: 0,
               fillParent: true,
               media: media,
               peaks: [data.getChannelData(0)],
@@ -9871,10 +9875,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       var _base_plugin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__( /*! ../base-plugin.js */"./node_modules/wavesurfer.js/dist/base-plugin.js");
       /* harmony import */
       var _event_emitter_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__( /*! ../event-emitter.js */"./node_modules/wavesurfer.js/dist/event-emitter.js");
+      /**
+       * Regions are visual overlays on the waveform that can be used to mark segments of audio.
+       * Regions can be clicked on, dragged and resized.
+       * You can set the color and content of each region, as well as their HTML content.
+       */
+
       function makeDraggable(element, onStart, onMove, onEnd) {
         if (!element) return function () {
           return undefined;
         };
+        var minDx = 5;
+        var sumDx = 0;
         var preventClickPropagation = false;
         var onClick = function onClick(e) {
           preventClickPropagation && e.stopPropagation();
@@ -9886,11 +9898,19 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           var onMouseMove = function onMouseMove(e) {
             var newX = e.clientX;
             var dx = newX - x;
+            sumDx += dx;
             x = newX;
-            preventClickPropagation = true;
-            onMove(dx);
+            if (Math.abs(sumDx) >= minDx) {
+              if (!preventClickPropagation) {
+                preventClickPropagation = true;
+                onMove(sumDx);
+              } else {
+                onMove(dx);
+              }
+            }
           };
           var onMouseUp = function onMouseUp() {
+            sumDx = 0;
             onEnd();
             setTimeout(function () {
               return preventClickPropagation = false;
@@ -10199,7 +10219,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             })];
             (_this$subscriptions = this.subscriptions).push.apply(_this$subscriptions, regionSubscriptions);
           }
-          /** Create a region with the given parameters */
+          /** Create a region with given parameters */
         }, {
           key: "addRegion",
           value: function addRegion(options) {
@@ -10238,7 +10258,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           key: "enableDragSelection",
           value: function enableDragSelection(options) {
             var _this15 = this;
-            var minWidth = 5; // min 5 pixels
             var region = null;
             var startX = 0;
             var sumDx = 0;
@@ -10249,13 +10268,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             },
             // On mousemove
             function (dx) {
-              sumDx += dx;
               if (!_this15.wavesurfer || !_this15.wrapper) return;
-              if (!region && Math.abs(sumDx) >= minWidth) {
+              if (!region) {
                 var duration = _this15.wavesurfer.getDuration();
                 var box = _this15.wrapper.getBoundingClientRect();
                 var start = (startX - box.left) / box.width * duration;
-                var end = (startX + sumDx - box.left) / box.width * duration;
+                var end = (startX + dx - box.left) / box.width * duration;
                 if (start > end) {
                   var _ref = [end, start];
                   start = _ref[0];
@@ -10267,6 +10285,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                 }), duration);
                 _this15.regionsContainer.appendChild(region.element);
               }
+              sumDx += dx;
               if (region) {
                 var privateRegion = region;
                 privateRegion.onUpdate(dx, [sumDx > 0 ? 'end' : 'start']);
@@ -10443,14 +10462,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           value: function () {
             var _renderPeaks = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(channelData, width, height, pixelRatio) {
               var _this$options$barRadi,
+                _this$options$barHeig,
                 _this18 = this;
-              var barWidth, barGap, barRadius, leftChannel, len, barCount, barIndexScale, halfHeight, isMono, rightChannel, useNegative, draw, _this$scrollContainer, scrollLeft, scrollWidth, clientWidth, scale, viewportWidth, start, end, step, _loop, i, _loop2, _i2;
+              var barWidth, barGap, barRadius, scaleY, leftChannel, len, barCount, barIndexScale, halfHeight, isMono, rightChannel, useNegative, draw, _this$scrollContainer, scrollLeft, scrollWidth, clientWidth, scale, viewportWidth, start, end, step, _loop, i, _loop2, _i2;
               return _regeneratorRuntime().wrap(function _callee3$(_context6) {
                 while (1) switch (_context6.prev = _context6.next) {
                   case 0:
                     barWidth = this.options.barWidth != null ? this.options.barWidth * pixelRatio : 1;
                     barGap = this.options.barGap != null ? this.options.barGap * pixelRatio : this.options.barWidth ? barWidth / 2 : 0;
                     barRadius = (_this$options$barRadi = this.options.barRadius) !== null && _this$options$barRadi !== void 0 ? _this$options$barRadi : 0;
+                    scaleY = (_this$options$barHeig = this.options.barHeight) !== null && _this$options$barHeig !== void 0 ? _this$options$barHeig : 1;
                     leftChannel = channelData[0];
                     len = leftChannel.length;
                     barCount = Math.floor(width / (barWidth + barGap));
@@ -10483,9 +10504,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                       for (var i = start; i < end; i++) {
                         var barIndex = Math.round((i - start) * barIndexScale);
                         if (barIndex > prevX) {
-                          var leftBarHeight = Math.round(prevLeft * halfHeight);
-                          var rightBarHeight = Math.round(prevRight * halfHeight);
-                          ctx.roundRect(prevX * (barWidth + barGap), halfHeight - leftBarHeight, barWidth, leftBarHeight + rightBarHeight || 1, barRadius);
+                          var leftBarHeight = Math.round(prevLeft * halfHeight * scaleY);
+                          var rightBarHeight = Math.round(prevRight * halfHeight * scaleY);
+                          ctx.roundRect(prevX * (barWidth + barGap), halfHeight - leftBarHeight, barWidth, leftBarHeight + (rightBarHeight || 1), barRadius);
                           prevX = barIndex;
                           prevLeft = 0;
                           prevRight = 0;
@@ -10545,17 +10566,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                       }, _loop);
                     });
                     i = end;
-                  case 24:
+                  case 25:
                     if (!(i < len)) {
-                      _context6.next = 29;
+                      _context6.next = 30;
                       break;
                     }
-                    return _context6.delegateYield(_loop(i), "t0", 26);
-                  case 26:
+                    return _context6.delegateYield(_loop(i), "t0", 27);
+                  case 27:
                     i += step;
-                    _context6.next = 24;
+                    _context6.next = 25;
                     break;
-                  case 29:
+                  case 30:
                     _loop2 = /*#__PURE__*/_regeneratorRuntime().mark(function _loop2(_i2) {
                       return _regeneratorRuntime().wrap(function _loop2$(_context5) {
                         while (1) switch (_context5.prev = _context5.next) {
@@ -10571,17 +10592,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                       }, _loop2);
                     });
                     _i2 = start - 1;
-                  case 31:
+                  case 32:
                     if (!(_i2 >= 0)) {
-                      _context6.next = 36;
+                      _context6.next = 37;
                       break;
                     }
-                    return _context6.delegateYield(_loop2(_i2), "t1", 33);
-                  case 33:
+                    return _context6.delegateYield(_loop2(_i2), "t1", 34);
+                  case 34:
                     _i2 -= step;
-                    _context6.next = 31;
+                    _context6.next = 32;
                     break;
-                  case 36:
+                  case 37:
                   case "end":
                     return _context6.stop();
                 }
